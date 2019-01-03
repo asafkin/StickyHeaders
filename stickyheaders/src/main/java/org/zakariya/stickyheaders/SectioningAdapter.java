@@ -1000,6 +1000,20 @@ public class SectioningAdapter extends RecyclerView.Adapter<SectioningAdapter.Vi
 		updateCollapseAndSelectionStateForSectionChange(sectionIndex, -1);
 	}
 
+	public void notifySectionHeaderChanged(int sectionIndex) {
+		if (sections == null) {
+			buildSectionIndex();
+			notifyAllSectionsDataSetChanged();
+		} else {
+			buildSectionIndex();
+			Section section = this.sections.get(sectionIndex);
+			if (!section.hasHeader) {
+				throw new IllegalArgumentException("notifySectionFooterChanged: adapter implementation reports that section " + sectionIndex + " does not have a header");
+			}
+			notifyItemChanged(section.adapterPosition);
+		}
+	}
+
 	/**
 	 * Notify that a section has had a footer added to it
 	 *
